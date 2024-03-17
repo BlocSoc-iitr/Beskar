@@ -1,0 +1,5 @@
+1,DeleteExpressionMutation,helper/Counter.sol,8:9,number = newNumber,assert(true)
+2,AssignmentMutation,helper/Counter.sol,8:18,newNumber,0
+3,AssignmentMutation,helper/Counter.sol,8:18,newNumber,1
+4,DeleteExpressionMutation,helper/Counter.sol,12:9,number++,assert(true)
+5,UnaryOperatorMutation,helper/Counter.sol,12:15,++,--

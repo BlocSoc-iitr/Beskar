@@ -1,0 +1,42 @@
+[
+  {
+    "description": "DeleteExpressionMutation",
+    "diff": "--- original\n+++ mutant\n@@ -5,7 +5,8 @@\n     uint256 public number;\n \n     function setNumber(uint256 newNumber) public {\n-        number = newNumber;\n+        /// DeleteExpressionMutation(`number = newNumber` |==> `assert(true)`) of: `number = newNumber;`\n+        assert(true);\n     }\n \n     function increment() public {\n",
+    "id": "1",
+    "name": "mutants/1/helper/Counter.sol",
+    "original": "helper/Counter.sol",
+    "sourceroot": "/home/preeti/Beskar/Beskar"
+  },
+  {
+    "description": "AssignmentMutation",
+    "diff": "--- original\n+++ mutant\n@@ -5,7 +5,8 @@\n     uint256 public number;\n \n     function setNumber(uint256 newNumber) public {\n-        number = newNumber;\n+        /// AssignmentMutation(`newNumber` |==> `0`) of: `number = newNumber;`\n+        number = 0;\n     }\n \n     function increment() public {\n",
+    "id": "2",
+    "name": "mutants/2/helper/Counter.sol",
+    "original": "helper/Counter.sol",
+    "sourceroot": "/home/preeti/Beskar/Beskar"
+  },
+  {
+    "description": "AssignmentMutation",
+    "diff": "--- original\n+++ mutant\n@@ -5,7 +5,8 @@\n     uint256 public number;\n \n     function setNumber(uint256 newNumber) public {\n-        number = newNumber;\n+        /// AssignmentMutation(`newNumber` |==> `1`) of: `number = newNumber;`\n+        number = 1;\n     }\n \n     function increment() public {\n",
+    "id": "3",
+    "name": "mutants/3/helper/Counter.sol",
+    "original": "helper/Counter.sol",
+    "sourceroot": "/home/preeti/Beskar/Beskar"
+  },
+  {
+    "description": "DeleteExpressionMutation",
+    "diff": "--- original\n+++ mutant\n@@ -9,6 +9,7 @@\n     }\n \n     function increment() public {\n-        number++;\n+        /// DeleteExpressionMutation(`number++` |==> `assert(true)`) of: `number++;`\n+        assert(true);\n     }\n }\n",
+    "id": "4",
+    "name": "mutants/4/helper/Counter.sol",
+    "original": "helper/Counter.sol",
+    "sourceroot": "/home/preeti/Beskar/Beskar"
+  },
+  {
+    "description": "UnaryOperatorMutation",
+    "diff": "--- original\n+++ mutant\n@@ -9,6 +9,7 @@\n     }\n \n     function increment() public {\n-        number++;\n+        /// UnaryOperatorMutation(`++` |==> `--`) of: `number++;`\n+        number--;\n     }\n }\n",
+    "id": "5",
+    "name": "mutants/5/helper/Counter.sol",
+    "original": "helper/Counter.sol",
+    "sourceroot": "/home/preeti/Beskar/Beskar"
+  }
+]
