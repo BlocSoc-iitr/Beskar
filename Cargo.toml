@@ -2,6 +2,14 @@
 name = "Beskar"
 version = "0.1.0"
 edition = "2021"
+authors = ["Preeti Karnwal karnwalpreeti102@gmail.com"]
+license = "MIT OR Apache-2.0"
+description = "A tool to generate mutations using the gambit tool and simultaneously running tests and producing concerned analytics"
+readme = "README.md"
+homepage = "https://github.com/BlocSoc-iitr/Beskar"
+repository = "https://github.com/BlocSoc-iitr/Beskar"
+keywords = ["mutation", "testing", "gambit", "tool", "foundry"]
+categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
