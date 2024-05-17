@@ -5,3 +5,21 @@ version = 3
 [[package]]
 name = "Beskar"
 version = "0.1.0"
+dependencies = [
+ "rev_buf_reader",
+]
+
+[[package]]
+name = "memchr"
+version = "2.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec55b440c8892f40d56c76c1d"
+
+[[package]]
+name = "rev_buf_reader"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8c0f2e47e00e29920959826e2e1784728a3780d1a784247be5257258cc75f910"
+dependencies = [
+ "memchr",
+]

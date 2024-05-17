@@ -1,11 +1,20 @@
+extern crate rev_buf_reader;
+
 use std::process::Command;
 use std::fs::{self, File};
 use std::path::PathBuf;
 use std::path::Path;
+use std::io::BufRead;
+use rev_buf_reader::RevBufReader;
 
 // Tasks:
 // 1. run tests on generated mutants 
 // 2. make it a tool
+
+fn lines_from_file(file: &File, limit: usize) -> Vec<String> {
+    let buf = RevBufReader::new(file);
+    buf.lines().take(limit).map(|l| l.expect("Could not parse line")).collect()
+}
 
 fn main() {
     // assuming run from foundry project root
@@ -34,14 +43,22 @@ fn main() {
                 let mutant_num = mutant.unwrap();
                 let mutant_file = format!("{}/src/{}",mutant_num.path().display(), file_name);
                 
+                // direct terminal command output to file 
                 let _ = fs::copy(Path::new(&mutant_file),Path::new(&file_path));
+                let out_file = File::create("./beskar_out/outfile.txt").expect("failed to open output file.");
                 let output2 = Command::new("forge")
                 .args(["test"])
-                .output()
+                .stdout(out_file)
+                .spawn()
                 .expect("failed to execute forge test");
-                println!("status: {}", output2.status);
-                println!("stdout: {}", String::from_utf8_lossy(&output2.stdout));
-                println!("stderr: {}", String::from_utf8_lossy(&output2.stderr));
+                // println!("status: {}", output2.status);
+                // println!("stdout: {}", String::from_utf8_lossy(&output2.stdout));
+                // println!("stderr: {}", String::from_utf8_lossy(&output2.stderr));
+
+                // read output file and read last line
+                let outfile = File::create("./beskar_out/outfile.txt").expect("failed to open output file");
+                let last_line = lines_from_file(&outfile,1 );
+                println!("{}",last_line[0]);
 
                 let _ = fs::copy(Path::new(&tmp_file_name),Path::new(&file_path));
                 let _ = fs::remove_file(Path::new(&tmp_file_name));
