@@ -1,7 +1,7 @@
 extern crate rev_buf_reader;
 
 use std::process::Command;
-use std::fs::{self, File};
+use std::fs::{self, create_dir, File};
 use std::path::PathBuf;
 use std::path::Path;
 use std::io::BufRead;
@@ -45,6 +45,7 @@ fn main() {
                 
                 // direct terminal command output to file 
                 let _ = fs::copy(Path::new(&mutant_file),Path::new(&file_path));
+                let _ = create_dir("./beskar_out");
                 let out_file = File::create("./beskar_out/outfile.txt").expect("failed to open output file.");
                 let output2 = Command::new("forge")
                 .args(["test"])
@@ -56,7 +57,7 @@ fn main() {
                 // println!("stderr: {}", String::from_utf8_lossy(&output2.stderr));
 
                 // read output file and read last line
-                let outfile = File::create("./beskar_out/outfile.txt").expect("failed to open output file");
+                let outfile = File::open("./beskar_out/outfile.txt").expect("failed to open output file");
                 let last_line = lines_from_file(&outfile,1 );
                 println!("{}",last_line[0]);
 
