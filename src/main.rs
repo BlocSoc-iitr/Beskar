@@ -8,8 +8,7 @@ use std::io::BufRead;
 use rev_buf_reader::RevBufReader;
 
 // Tasks:
-// 1. run tests on generated mutants 
-// 2. make it a tool
+// 1. manage report
 
 fn lines_from_file(file: &File, limit: usize) -> Vec<String> {
     let buf = RevBufReader::new(file);
@@ -39,6 +38,9 @@ fn main() {
             let _ = fs::copy(Path::new(&file_path),Path::new(&tmp_file_name));
             let mutants = fs::read_dir("./gambit_out/mutants").unwrap();
 
+            let mut failed = 0;
+            let mut passed = 0;
+
             for mutant in mutants{
                 let mutant_num = mutant.unwrap();
                 let mutant_file = format!("{}/src/{}",mutant_num.path().display(), file_name);
@@ -52,20 +54,28 @@ fn main() {
                 .stdout(out_file)
                 .spawn()
                 .expect("failed to execute forge test");
-                // println!("status: {}", output2.status);
-                // println!("stdout: {}", String::from_utf8_lossy(&output2.stdout));
-                // println!("stderr: {}", String::from_utf8_lossy(&output2.stderr));
+
+                let tmp_out = Command::new("forge")
+                .args(["test"])
+                .output()
+                .expect("failed to execute forge test");
+                
+                if tmp_out.status.success() {
+                    passed+=1;
+                } else {
+                    failed+=1;
+                }
 
                 // read output file and read last line
                 let outfile = File::open("./beskar_out/outfile.txt").expect("failed to open output file");
                 let last_line = lines_from_file(&outfile,1 );
-                println!("{}",last_line[0]);
-
+                for i in 0..last_line.len(){
+                    println!("{}",last_line[i]);
+                }
+                println!("mutant number : {} tests failed : {} tests passed : {}", mutant_num.path().display(), failed, passed);
                 let _ = fs::copy(Path::new(&tmp_file_name),Path::new(&file_path));
-                let _ = fs::remove_file(Path::new(&tmp_file_name));
-                let _ = fs::remove_dir("./gambit_out");
+                // let _ = fs::remove_file(Path::new(&tmp_file_name));
             }
-            
         }
     }
 
