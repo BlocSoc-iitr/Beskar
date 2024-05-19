@@ -10,6 +10,9 @@ use rev_buf_reader::RevBufReader;
 // Tasks:
 // 1. manage report
 
+// 1. grep "Failing tests:" beskar_out/outfile.txt -A 2 > beskar_out/outfile2.txt
+// 2. grep "FAIL. "  beskar_out/outfile2.txt
+
 fn lines_from_file(file: &File, limit: usize) -> Vec<String> {
     let buf = RevBufReader::new(file);
     buf.lines().take(limit).map(|l| l.expect("Could not parse line")).collect()
@@ -72,9 +75,24 @@ fn main() {
                 for i in 0..last_line.len(){
                     println!("{}",last_line[i]);
                 }
-                println!("mutant number : {} tests failed : {} tests passed : {}", mutant_num.path().display(), failed, passed);
+                println!("mutant number : {} \ntests failed : {} \ntests passed : {}", mutant_num.path().display(), failed, passed);
                 let _ = fs::copy(Path::new(&tmp_file_name),Path::new(&file_path));
+
+                let out_file_2 = File::create("./beskar_out/outfile2.txt").expect("failed to open output file.");
+                let output3 = Command::new("grep")
+                .args(["\"Failing tests:\"", "beskar_out/outfile.txt", "-A", "2"])
+                .stdout(out_file_2)
+                .spawn()
+                .expect("failed to execute grep");
+
+                let output4 = Command::new("grep")
+                .args(["FAIL. ", "beskar_out/outfile2.txt"])
+                .output()
+                .expect("failed to execute grep");
+
+                println!("{:?}",output4.stdout);
                 // let _ = fs::remove_file(Path::new(&tmp_file_name));
+                // let _ = fs::remove_dir(Path::new("./gambit_out/"));
             }
         }
     }
