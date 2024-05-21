@@ -31,10 +31,7 @@ fn main() {
                 .args(["mutate", "--filename",file_path.as_str()])
                 .output()
                 .expect("failed to execute process");
-
-            println!("status: {}", output.status);
-            println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-            println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+            println!("{}", String::from_utf8_lossy(&output.stdout));
 
             let tmp_file_name = format!("./src/{}","tmp.sol");
             let _ = File::create(&tmp_file_name).unwrap();
@@ -45,9 +42,12 @@ fn main() {
             let mut passed = 0;
 
             for mutant in mutants{
-                let mutant_num = mutant.unwrap();
-                let mutant_file = format!("{}/src/{}",mutant_num.path().display(), file_name);
-                
+                let mutant_check = mutant.as_ref().unwrap();
+                let mutant_dir = mutant.as_ref().unwrap().file_name().into_string().unwrap();
+                let mutant_vec  = mutant_dir.split("/").collect::<Vec<&str>>();
+                let mutant_num = mutant_vec[mutant_vec.len()-1];
+                let mutant_file = format!("{}/src/{}",mutant_check.path().display(), file_name);
+
                 // direct terminal command output to file 
                 let _ = fs::copy(Path::new(&mutant_file),Path::new(&file_path));
                 let _ = create_dir("./beskar_out");
@@ -80,7 +80,7 @@ fn main() {
 
                 let out_file_2 = File::create("./beskar_out/outfile2.txt").expect("failed to open output file.");
                 let output3 = Command::new("grep")
-                .args(["\"Failing tests:\"", "beskar_out/outfile.txt", "-A", "2"])
+                .args(["tests:", "beskar_out/outfile.txt", "-A", "2"])
                 .stdout(out_file_2)
                 .spawn()
                 .expect("failed to execute grep");
@@ -90,7 +90,7 @@ fn main() {
                 .output()
                 .expect("failed to execute grep");
 
-                println!("{:?}",output4.stdout);
+                println!("{}",String::from_utf8_lossy(&output.stdout));
                 // let _ = fs::remove_file(Path::new(&tmp_file_name));
                 // let _ = fs::remove_dir(Path::new("./gambit_out/"));
             }
