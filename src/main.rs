@@ -1,22 +1,10 @@
-extern crate rev_buf_reader;
-
 use std::process::Command;
 use std::fs::{self, create_dir, File};
 use std::path::PathBuf;
 use std::path::Path;
-use std::io::BufRead;
-use rev_buf_reader::RevBufReader;
 
 // Tasks:
-// 1. manage report
-
-// 1. grep "Failing tests:" beskar_out/outfile.txt -A 2 > beskar_out/outfile2.txt
-// 2. grep "FAIL. "  beskar_out/outfile2.txt
-
-fn lines_from_file(file: &File, limit: usize) -> Vec<String> {
-    let buf = RevBufReader::new(file);
-    buf.lines().take(limit).map(|l| l.expect("Could not parse line")).collect()
-}
+// 1. Add failing mutants info: tests that pass for respective mutant
 
 fn main() {
     // assuming run from foundry project root
@@ -37,9 +25,6 @@ fn main() {
             let _ = File::create(&tmp_file_name).unwrap();
             let _ = fs::copy(Path::new(&file_path),Path::new(&tmp_file_name));
             let mutants = fs::read_dir("./gambit_out/mutants").unwrap();
-
-            let mut failed = 0;
-            let mut passed = 0;
 
             for mutant in mutants{
                 let mutant_check = mutant.as_ref().unwrap();
