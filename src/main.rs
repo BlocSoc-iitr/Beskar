@@ -51,8 +51,9 @@ fn main() {
                 // direct terminal command output to file 
                 let _ = fs::copy(Path::new(&mutant_file),Path::new(&file_path));
                 let _ = create_dir("./beskar_out");
-                let out_file = File::create("./beskar_out/outfile.txt").expect("failed to open output file.");
-                let output2 = Command::new("forge")
+                let out_file_path = format!("./beskar_out/outfile{}.txt", mutant_num);
+                let out_file = File::create(out_file_path.clone()).expect("failed to open output file.");
+                let _ = Command::new("forge")
                 .args(["test"])
                 .stdout(out_file)
                 .spawn()
