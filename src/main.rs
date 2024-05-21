@@ -59,41 +59,21 @@ fn main() {
                 .spawn()
                 .expect("failed to execute forge test");
 
-                let tmp_out = Command::new("forge")
+                let _ = Command::new("forge")
                 .args(["test"])
                 .output()
                 .expect("failed to execute forge test");
                 
-                if tmp_out.status.success() {
-                    passed+=1;
-                } else {
-                    failed+=1;
-                }
-
-                // read output file and read last line
-                let outfile = File::open("./beskar_out/outfile.txt").expect("failed to open output file");
-                let last_line = lines_from_file(&outfile,1 );
-                for i in 0..last_line.len(){
-                    println!("{}",last_line[i]);
-                }
-                println!("mutant number : {} \ntests failed : {} \ntests passed : {}", mutant_num.path().display(), failed, passed);
-                let _ = fs::copy(Path::new(&tmp_file_name),Path::new(&file_path));
-
-                let out_file_2 = File::create("./beskar_out/outfile2.txt").expect("failed to open output file.");
                 let output3 = Command::new("grep")
-                .args(["tests:", "beskar_out/outfile.txt", "-A", "2"])
-                .stdout(out_file_2)
-                .spawn()
-                .expect("failed to execute grep");
-
-                let output4 = Command::new("grep")
-                .args(["FAIL. ", "beskar_out/outfile2.txt"])
+                .args(["PASS",out_file_path.as_str()])
                 .output()
-                .expect("failed to execute grep");
-
-                println!("{}",String::from_utf8_lossy(&output.stdout));
-                // let _ = fs::remove_file(Path::new(&tmp_file_name));
-                // let _ = fs::remove_dir(Path::new("./gambit_out/"));
+                .expect("failed to grep");
+                
+                let final_op = String::from_utf8_lossy(&output3.stdout);
+                println!("{}", final_op);
+                if final_op == ""{
+                    println!("mutant number : {} PASSED", mutant_num);
+                }
             }
         }
     }
