@@ -39,16 +39,18 @@ fn main() {
                 let out_file_path = format!("./beskar_out/outfile{}.txt", mutant_num);
                 let out_file =
                     File::create(out_file_path.clone()).expect("failed to open output file.");
-                let _ = Command::new("forge")
+                let mut child = Command::new("forge")
                     .args(["test"])
                     .stdout(out_file)
                     .spawn()
                     .expect("failed to execute forge test");
 
-                let _ = Command::new("forge")
-                    .args(["test"])
-                    .output()
-                    .expect("failed to execute forge test");
+                let _ = child.wait();
+
+                // let _ = Command::new("forge")
+                //     .args(["test"])
+                //     .output()
+                //     .expect("failed to execute forge test");
 
                 let output3 = Command::new("grep")
                     .args(["PASS", out_file_path.as_str()])
