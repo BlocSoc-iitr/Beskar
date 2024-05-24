@@ -53,7 +53,7 @@ fn main() {
 
                 let _ = fs::copy(Path::new(&mutant_file), Path::new(&file_path));
 
-                println!("Mutant Number:{}", mutant_num);
+                println!("Mutant Number: {}", mutant_num);
                 let mut sp = Spinner::new(Spinners::Dots9, "running tests".into());
                 sleep(Duration::from_secs(3));
 
@@ -83,6 +83,7 @@ fn main() {
                     println!("{} {}", "[PASS] mutant number".green(), mutant_num.green());
                 } else {
                     println!("{} {}","[FAIL] mutant number".red(), mutant_num.red());
+                    println!("{}", "Passing tests:".red());
                     for i in 0..final_op_vec.len(){
                         let passed_test = final_op_vec[i];
                         println!("{}", passed_test.red());
