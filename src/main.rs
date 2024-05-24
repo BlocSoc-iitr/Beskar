@@ -1,3 +1,8 @@
+use spinners::{Spinner, Spinners};
+use std::thread::sleep;
+use std::time::Duration;
+use colored::*;
+
 use std::fs::{self, create_dir, File};
 use std::path::Path;
 use std::path::PathBuf;
@@ -47,6 +52,11 @@ fn main() {
                 let mutant_file = format!("{}/src/{}", mutant_check.path().display(), file_name);
 
                 let _ = fs::copy(Path::new(&mutant_file), Path::new(&file_path));
+
+                println!("Mutant Number:{}", mutant_num);
+                let mut sp = Spinner::new(Spinners::Dots9, "running tests".into());
+                sleep(Duration::from_secs(3));
+
                 let _ = create_dir("./beskar_out");
                 let out_file_path = format!("./beskar_out/outfile{}.txt", mutant_num);
                 let out_file =
@@ -59,6 +69,8 @@ fn main() {
                     .expect("failed to execute forge test");
 
                 let _ = child.wait();
+                sp.stop();
+                println!();
 
                 let output3 = Command::new("grep")
                     .args(["PASS", out_file_path.as_str()])
@@ -66,10 +78,15 @@ fn main() {
                     .expect("failed to grep");
 
                 let final_op = String::from_utf8_lossy(&output3.stdout);
-                if final_op == "" {
-                    println!("mutant number : {} PASSED", mutant_num);
+                let final_op_vec = final_op.split("[PASS]").collect::<Vec<&str>>();
+                if final_op == ""{
+                    println!("{} {}", "[PASS] mutant number".green(), mutant_num.green());
                 } else {
-                    println!("{}", final_op);
+                    println!("{} {}","[FAIL] mutant number".red(), mutant_num.red());
+                    for i in 0..final_op_vec.len(){
+                        let passed_test = final_op_vec[i];
+                        println!("{}", passed_test.red());
+                    }
                 }
             }
         }
