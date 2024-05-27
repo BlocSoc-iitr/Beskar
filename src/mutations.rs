@@ -15,7 +15,6 @@ pub fn mutate(path : &PathBuf, tmp_file_name: &String) {
             .expect("failed to execute process");
         println!("{}", String::from_utf8_lossy(&output.stdout));
     
-        // let tmp_file_name = format!("./src/{}", "tmp.sol");
         let _ = File::create(&tmp_file_name).unwrap();
         let _ = fs::copy(Path::new(&file_path), Path::new(&tmp_file_name));
     }

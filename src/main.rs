@@ -2,7 +2,7 @@ use std::fs::{self};
 use std::path::Path;
 use std::path::PathBuf;
 
-use Beskar::{mutate, run_tests};
+use Beskar::{generate_output, mutate, run_tests};
 
 /// 1. terminal report overview
 /*
@@ -39,6 +39,7 @@ fn main() {
                     let mutant_check = mutant.as_ref().unwrap().path();
                     let mutant_dir = mutant.as_ref().unwrap().file_name().into_string().unwrap();
                     run_tests(&mutant_dir, &mutant_check, &path);
+                    generate_output(&mutant_dir)
                 }
                 let _ = fs::copy(Path::new(&tmp_file_name),Path::new(&file_path));
 
