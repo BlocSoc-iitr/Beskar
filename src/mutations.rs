@@ -1,9 +1,9 @@
-use std::fs::{self, File, ReadDir};
+use std::fs::{self, File};
 use std::path::Path;
 use std::path::PathBuf;
 use std::process::Command;
 
-pub fn mutate(path : PathBuf, tmp_file_name: String) {
+pub fn mutate(path : &PathBuf, tmp_file_name: &String) {
     let new_file = PathBuf::from(path);
     let file_name = new_file.file_name().unwrap().to_str().unwrap();
     let file_path = format!("./src/{}", file_name);
