@@ -25,7 +25,16 @@ use std::process::Command;
 fn main() {
     /* assuming run from foundry project root */
 
-    /*read solidity source files  */
+    let args: Vec<String> = std::env::args().collect();
+    match args[1].as_str(){
+        "run" => {
+            mutations::
+        }
+        _ => {
+
+        }
+
+    }
     let paths = fs::read_dir("./src").unwrap();
 
     for path in paths {
