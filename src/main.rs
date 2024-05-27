@@ -8,6 +8,8 @@ use std::path::Path;
 use std::path::PathBuf;
 use std::process::Command;
 
+use Beskar::mutate;
+
 /// 1. terminal report overview
 /*
 ----------------------------------------------
@@ -28,7 +30,18 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
     match args[1].as_str(){
         "run" => {
-            mutations::
+            let paths = fs::read_dir("./src").unwrap();
+
+            for path_ in paths {
+                let tmp_file_name = format!("./src/{}", "tmp.sol");
+                let path = path_.unwrap().path();
+                mutate(path, tmp_file_name);
+                let mutants = fs::read_dir("./gambit_out/mutants").unwrap();
+                for mutant in mutants {
+                    
+                }
+
+            }
         }
         _ => {
 
