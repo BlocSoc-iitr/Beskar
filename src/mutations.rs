@@ -9,12 +9,15 @@ pub fn mutate(path : &PathBuf, tmp_file_name: &String) {
     let file_path = format!("./src/{}", file_name);
 
     if file_name.ends_with(".sol") {
+        println!("{file_path}");
         let output = Command::new("gambit")
             .args(["mutate", "--filename", file_path.as_str()])
             .output()
             .expect("failed to execute process");
         println!("{}", String::from_utf8_lossy(&output.stdout));
-    
+        println!("{}", String::from_utf8_lossy(&output.stderr));
+        println!("mutation func is executed");
+        
         let _ = File::create(&tmp_file_name).unwrap();
         let _ = fs::copy(Path::new(&file_path), Path::new(&tmp_file_name));
     }

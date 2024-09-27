@@ -1,4 +1,5 @@
 use spinners::{Spinner, Spinners};
+use std::fmt::format;
 use std::thread::sleep;
 use std::time::Duration;
 
@@ -12,7 +13,7 @@ pub fn run_tests(mutant_dir:&String, mutant_check: &PathBuf, path: &PathBuf ){
     let new_file = PathBuf::from(path);
     let file_name = new_file.file_name().unwrap().to_str().unwrap();
     let file_path = format!("./src/{}", file_name);
-
+    
     let mutant_vec = mutant_dir.split("/").collect::<Vec<&str>>();
     let mutant_num = mutant_vec[mutant_vec.len() - 1];
     let mutant_file = format!("{}/src/{}", mutant_check.display(), file_name);
@@ -27,8 +28,18 @@ pub fn run_tests(mutant_dir:&String, mutant_check: &PathBuf, path: &PathBuf ){
     let out_file_path = format!("./beskar_out/outfile{}.txt", mutant_num);
     let out_file = File::create(out_file_path.clone()).expect("failed to open output file.");
 
-    let mut child = Command::new("forge")
+    /*let mut child = Command::new("forge")
         .args(["test"])
+        .stdout(out_file)
+        .spawn()
+        .expect("failed to execute forge test");*/
+
+    let test_srcfile_name = file_name.split(".").collect::<Vec<&str>>();
+    let path_to_test_file = format!("./test/{}.t.sol", test_srcfile_name[0]);
+
+
+    let mut child = Command::new("forge")
+        .args(&["test", "--match-path", path_to_test_file.as_str()])
         .stdout(out_file)
         .spawn()
         .expect("failed to execute forge test");

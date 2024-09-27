@@ -16,3 +16,4 @@ categories = ["command-line-utilities"]
 [dependencies]
 colored = "2.1.0"
 spinners = "4.1.1"
+ctrlc = "3.2"
