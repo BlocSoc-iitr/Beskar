@@ -8,8 +8,8 @@ use std::path::Path;
 use std::path::PathBuf;
 use std::process::Command;
 
-pub fn run_tests(mutant_dir:&String, mutant_check: &PathBuf, path: &PathBuf ){
-
+pub fn run_tests(mutant_dir:&String, mutant_check: &PathBuf, path: &PathBuf, new_name_gambit : &str ){
+    println!("running tests");
     let new_file = PathBuf::from(path);
     let file_name = new_file.file_name().unwrap().to_str().unwrap();
     let file_path = format!("./src/{}", file_name);
@@ -21,6 +21,7 @@ pub fn run_tests(mutant_dir:&String, mutant_check: &PathBuf, path: &PathBuf ){
     let _ = fs::copy(Path::new(&mutant_file), Path::new(&file_path));
 
     println!("Mutant Number: {}", mutant_num);
+    println!("file number {}",&new_name_gambit);
     let mut sp = Spinner::new(Spinners::Dots9, "running tests".into());
     sleep(Duration::from_secs(3));
 

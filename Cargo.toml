@@ -17,3 +17,4 @@ categories = ["command-line-utilities"]
 colored = "2.1.0"
 spinners = "4.1.1"
 ctrlc = "3.2"
+regex = "1.7"
