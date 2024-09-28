@@ -8,7 +8,7 @@ use std::path::Path;
 use std::path::PathBuf;
 use std::process::Command;
 
-pub fn run_tests(mutant_dir:&String, mutant_check: &PathBuf, path: &PathBuf, new_name_gambit : &str ){
+pub fn run_tests(mutant_dir:&String, mutant_check: &PathBuf, path: &PathBuf, new_name_gambit : &str,index :usize){
     println!("running tests");
     let new_file = PathBuf::from(path);
     let file_name = new_file.file_name().unwrap().to_str().unwrap();
@@ -24,9 +24,10 @@ pub fn run_tests(mutant_dir:&String, mutant_check: &PathBuf, path: &PathBuf, new
     println!("file number {}",&new_name_gambit);
     let mut sp = Spinner::new(Spinners::Dots9, "running tests".into());
     sleep(Duration::from_secs(3));
-
-    let _ = create_dir("./beskar_out");
-    let out_file_path = format!("./beskar_out/outfile{}.txt", mutant_num);
+    let beskarout_name = format!("./beskar_out{}",index); 
+    let _ = create_dir(beskarout_name);
+    
+    let out_file_path = format!("./beskar_out{}/outfile{}.txt", index,mutant_num);
     let out_file = File::create(out_file_path.clone()).expect("failed to open output file.");
 
     let test_srcfile_name = file_name.split(".").collect::<Vec<&str>>();

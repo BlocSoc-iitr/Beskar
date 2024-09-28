@@ -3,8 +3,11 @@ use std::process::Command;
 
 pub fn generate_output(mutant_dir:&String, new_name_gambit : &str){
     println!("generating output");
+    println!("{mutant_dir}");
+    println!("{new_name_gambit}");
     let mutant_vec = mutant_dir.split("/").collect::<Vec<&str>>();
     let mutant_num = mutant_vec[mutant_vec.len() - 1];
+    
     let out_file_path = format!("./beskar_out/outfile{}.txt", mutant_num);
 
     let output = Command::new("grep")
