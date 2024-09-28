@@ -9,6 +9,22 @@ use regex::Regex;
 
 use Beskar::{generate_output, mutate, run_tests};
 
+
+/// 1. terminal report overview
+/*
+----------------------------------------------
+|                                            |
+| mutant  number: **mutant number**          |
+| running tests(processing)                  |
+| testing completed                          |
+| if passed: display [PASS] with green color |
+| else: [FAIL] with reason in red color      |
+| reason: passing tests info                 |
+|                                            |
+----------------------------------------------
+ */
+
+ 
 fn restore_original_files(original_files: &Vec<(PathBuf, String)>) {
     for (path, content) in original_files {
         if let Err(e) = fs::write(path, content) {
