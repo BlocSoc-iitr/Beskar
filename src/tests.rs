@@ -29,12 +29,6 @@ pub fn run_tests(mutant_dir:&String, mutant_check: &PathBuf, path: &PathBuf, new
     let out_file_path = format!("./beskar_out/outfile{}.txt", mutant_num);
     let out_file = File::create(out_file_path.clone()).expect("failed to open output file.");
 
-    /*let mut child = Command::new("forge")
-        .args(["test"])
-        .stdout(out_file)
-        .spawn()
-        .expect("failed to execute forge test");*/
-
     let test_srcfile_name = file_name.split(".").collect::<Vec<&str>>();
     let path_to_test_file = format!("./test/{}.t.sol", test_srcfile_name[0]);
 
